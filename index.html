@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSONBin 测试</title>
+    <title>JSONBin 写入测试</title>
 </head>
 <body>
     <h1>JSONBin 写入测试</h1>
@@ -10,8 +10,8 @@
 
     <script>
         // ★★★ 把下面两个值换成你的 ★★★
-        var BIN_ID = '6a3e8993da38895dfe0305eb';
-        var API_KEY = '$2a$10$Wqko4epXc4c5qA/GZTnSKeqLKoMWNFjQ5wpgU.VknhHk1syaZ1FOS'; // 如果 Bin 是 Public，这行可以删掉
+        var BIN_ID = '6a3e8993da38895dfe0305eb';      // ← 填你的 Bin ID
+        var API_KEY = '$2a$10$Wqko4epXc4c5qA/GZTnSKeqLKoMWNFjQ5wpgU.VknhHk1syaZ1FOS'; // ← 填你的 Access Key
 
         function saveTest() {
             var status = document.getElementById('status');
@@ -32,8 +32,8 @@
             xhr.open('PUT', 'https://api.jsonbin.io/v3/b/' + BIN_ID, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             
-            // ★★★ 如果是 Public Bin，注释掉下面这行 ★★★
-            // xhr.setRequestHeader('X-Master-Key', API_KEY);
+            // ★★★ 关键：这行必须存在，且没有被注释 ★★★
+            xhr.setRequestHeader('X-Master-Key', API_KEY);
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
