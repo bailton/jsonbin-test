@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSONBin 测试</title>
+</head>
+<body>
+    <h1>JSONBin 写入测试</h1>
+    <button onclick="saveTest()">点击保存测试数据</button>
+    <p id="status">等待操作...</p>
+
+    <script>
+        // ★★★ 把下面两个值换成你的 ★★★
+        var BIN_ID = '你的BinID';
+        var API_KEY = '你的AccessKey'; // 如果 Bin 是 Public，这行可以删掉
+
+        function saveTest() {
+            var status = document.getElementById('status');
+            status.textContent = '⏳ 保存中...';
+
+            var testData = {
+                records: [
+                    {
+                        id: 'test-' + Date.now(),
+                        date: new Date().toISOString().slice(0, 10),
+                        good: '这是一个测试',
+                        improve: '测试写入功能'
+                    }
+                ]
+            };
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('PUT', 'https://api.jsonbin.io/v3/b/' + BIN_ID, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            // ★★★ 如果是 Public Bin，注释掉下面这行 ★★★
+            // xhr.setRequestHeader('X-Master-Key', API_KEY);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    status.textContent = '状态码: ' + xhr.status + '\n响应: ' + xhr.responseText;
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        status.style.color = 'green';
+                        status.textContent = '✅ 保存成功！\n' + status.textContent;
+                    } else {
+                        status.style.color = 'red';
+                        status.textContent = '❌ 保存失败\n' + status.textContent;
+                    }
+                }
+            };
+            xhr.onerror = function() {
+                status.textContent = '❌ 网络错误';
+                status.style.color = 'red';
+            };
+            xhr.send(JSON.stringify(testData));
+        }
+    </script>
+</body>
+</html>
